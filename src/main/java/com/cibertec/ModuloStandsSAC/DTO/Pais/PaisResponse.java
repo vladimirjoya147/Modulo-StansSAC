@@ -1,4 +1,4 @@
-package com.cibertec.ModuloStandsSAC.DTO;
+package com.cibertec.ModuloStandsSAC.DTO.Pais;
 
 import jakarta.persistence.Column;
 import lombok.Data;

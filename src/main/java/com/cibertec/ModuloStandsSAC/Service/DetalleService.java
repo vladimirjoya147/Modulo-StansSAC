@@ -6,6 +6,9 @@ import com.cibertec.ModuloStandsSAC.DTO.Cliente.ClienteResponseDTO;
 import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleMessage;
 import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleRequest;
 import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleResponse;
+import com.cibertec.ModuloStandsSAC.Entity.RegistroAlquiler;
+
+import java.util.List;
 
 public interface DetalleService {
     public DetalleResponse guardarDetalle (DetalleRequest detalleRequest);
@@ -15,4 +18,6 @@ public interface DetalleService {
     public DetalleMessage eliminarPorId (Integer id);
 
     public DetalleResponse buscarPorId (Integer id);
+
+
 }

@@ -1,6 +1,6 @@
 package com.cibertec.ModuloStandsSAC.Service;
 
-import com.cibertec.ModuloStandsSAC.DTO.PaisResponse;
+import com.cibertec.ModuloStandsSAC.DTO.Pais.PaisResponse;
 
 import java.util.List;
 

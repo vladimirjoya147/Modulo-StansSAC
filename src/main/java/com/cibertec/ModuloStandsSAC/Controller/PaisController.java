@@ -1,6 +1,6 @@
 package com.cibertec.ModuloStandsSAC.Controller;
 
-import com.cibertec.ModuloStandsSAC.DTO.PaisResponse;
+import com.cibertec.ModuloStandsSAC.DTO.Pais.PaisResponse;
 import com.cibertec.ModuloStandsSAC.Service.PaisService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

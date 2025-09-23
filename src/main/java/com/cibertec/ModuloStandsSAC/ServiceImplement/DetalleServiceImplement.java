@@ -6,11 +6,9 @@ import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleResponse;
 import com.cibertec.ModuloStandsSAC.Entity.DetalleAlquiler;
 import com.cibertec.ModuloStandsSAC.Entity.Mobiliario;
 import com.cibertec.ModuloStandsSAC.Entity.RegistroAlquiler;
-import com.cibertec.ModuloStandsSAC.Mapper.CategoriaMapper;
 import com.cibertec.ModuloStandsSAC.Mapper.DetalleMapper;
-import com.cibertec.ModuloStandsSAC.Repository.ClienteRepository;
 import com.cibertec.ModuloStandsSAC.Repository.DetalleRepository;
-import com.cibertec.ModuloStandsSAC.Repository.MonbiliarioRepository;
+import com.cibertec.ModuloStandsSAC.Repository.MobiliarioRepository;
 import com.cibertec.ModuloStandsSAC.Repository.RegistroAlquilerRepository;
 import com.cibertec.ModuloStandsSAC.Service.DetalleService;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,18 +16,18 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 @Service
 public class DetalleServiceImplement implements DetalleService {
 
     private final DetalleRepository detalleRepository;
-    private final MonbiliarioRepository monbiliarioRepository;
+    private final MobiliarioRepository mobiliarioRepository;
     private final RegistroAlquilerRepository registroAlquilerRepository;
 
-    public DetalleServiceImplement(DetalleRepository detalleRepository, MonbiliarioRepository monbiliarioRepository, RegistroAlquilerRepository registroAlquilerRepository) {
+    public DetalleServiceImplement(DetalleRepository detalleRepository, MobiliarioRepository mobiliarioRepository, RegistroAlquilerRepository registroAlquilerRepository) {
         this.detalleRepository = detalleRepository;
-        this.monbiliarioRepository = monbiliarioRepository;
+        this.mobiliarioRepository = mobiliarioRepository;
         this.registroAlquilerRepository = registroAlquilerRepository;
     }
 
@@ -38,7 +36,7 @@ public class DetalleServiceImplement implements DetalleService {
     @Transactional
     public DetalleResponse guardarDetalle(DetalleRequest detalleRequest) {
 
-        Mobiliario mobiliario = monbiliarioRepository.findById(detalleRequest.getIdMobiliario())
+        Mobiliario mobiliario = mobiliarioRepository.findById(detalleRequest.getIdMobiliario())
                 .orElseThrow(()->new EntityNotFoundException("No se econtro mobiliario con el id "+detalleRequest.getIdMobiliario()));
         RegistroAlquiler regAlquiler = registroAlquilerRepository.findById(detalleRequest.getIdRegistroAlquiler())
                 .orElseThrow(()->new EntityNotFoundException("No se econtro reg alquiler con el id "+detalleRequest.getIdRegistroAlquiler()));
@@ -47,7 +45,7 @@ public class DetalleServiceImplement implements DetalleService {
         }
         int nuevoStock = mobiliario.getStock()-detalleRequest.getCantidad();
         mobiliario.setStock(nuevoStock);
-        monbiliarioRepository.save(mobiliario);
+        mobiliarioRepository.save(mobiliario);
         BigDecimal precioUnitario = mobiliario.getPrecioUnitario();
         BigDecimal subtotal = precioUnitario.multiply(BigDecimal.valueOf(detalleRequest.getCantidad()));
         
@@ -71,9 +69,9 @@ public class DetalleServiceImplement implements DetalleService {
 
         Mobiliario mobiliarioAnterior = detalleExistente.getMobiliario();
         mobiliarioAnterior.setStock(mobiliarioAnterior.getStock() + detalleExistente.getCantidad());
-        monbiliarioRepository.save(mobiliarioAnterior);
+        mobiliarioRepository.save(mobiliarioAnterior);
 
-        Mobiliario nuevoMobiliario = monbiliarioRepository.findById(detalleRequest.getIdMobiliario())
+        Mobiliario nuevoMobiliario = mobiliarioRepository.findById(detalleRequest.getIdMobiliario())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "No se encontró mobiliario con id " + detalleRequest.getIdMobiliario()));
         if(nuevoMobiliario.getStock()<detalleRequest.getCantidad()){
@@ -81,7 +79,7 @@ public class DetalleServiceImplement implements DetalleService {
         }
         int nuevoStock = nuevoMobiliario.getStock()-detalleRequest.getCantidad();
         nuevoMobiliario.setStock(nuevoStock);
-        monbiliarioRepository.save(nuevoMobiliario);
+        mobiliarioRepository.save(nuevoMobiliario);
         BigDecimal precioUnitario = nuevoMobiliario.getPrecioUnitario();
         BigDecimal subtotal = precioUnitario.multiply(BigDecimal.valueOf(detalleRequest.getCantidad()));
 
@@ -101,7 +99,7 @@ public class DetalleServiceImplement implements DetalleService {
 
         Mobiliario mobiliarioActual = detalleAlquiler.getMobiliario();
         mobiliarioActual.setStock(mobiliarioActual.getStock()+detalleAlquiler.getCantidad());
-        monbiliarioRepository.save(mobiliarioActual);
+        mobiliarioRepository.save(mobiliarioActual);
 
         detalleAlquiler.setEstado(false);
         detalleRepository.save(detalleAlquiler);
@@ -117,4 +115,5 @@ public class DetalleServiceImplement implements DetalleService {
                 .orElseThrow(()->new EntityNotFoundException("mo se contro el detalle " + id));
         return DetalleMapper.toDTO(detalle);
     }
+
 }

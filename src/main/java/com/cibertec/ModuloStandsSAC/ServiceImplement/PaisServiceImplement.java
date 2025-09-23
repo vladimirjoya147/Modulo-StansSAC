@@ -1,8 +1,6 @@
 package com.cibertec.ModuloStandsSAC.ServiceImplement;
 
-import com.cibertec.ModuloStandsSAC.DTO.PaisResponse;
-import com.cibertec.ModuloStandsSAC.Entity.Pais;
-import com.cibertec.ModuloStandsSAC.Mapper.PaisMapper;
+import com.cibertec.ModuloStandsSAC.DTO.Pais.PaisResponse;
 import com.cibertec.ModuloStandsSAC.Repository.PaisRepository;
 import com.cibertec.ModuloStandsSAC.Service.PaisService;
 import org.springframework.stereotype.Service;
