@@ -1,13 +1,18 @@
 package com.cibertec.ModuloStandsSAC.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 @Data
 @Entity
-@Table(name = "Usuarios")
+@Builder
+@Table(name = "usuarios")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Usuarios {
     @Id
     @GeneratedValue( strategy= GenerationType.IDENTITY)
