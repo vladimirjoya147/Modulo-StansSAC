@@ -32,17 +32,22 @@ public class UsuarioServiceImplement implements UsuariosService {
 
     @Override
     public String register(RegisterRequest request) {
-        String mensaje="";
-        if (usuariosRepository.buscarPorEmail(request.getEmail()).equals(request.getEmail())){
-            return mensaje="El email ya existe";
+        String mensaje = "";
+
+        Usuarios usuarioExistente = usuariosRepository.buscarPorEmail(request.getEmail());
+
+        if (usuarioExistente != null) {
+            return "El email ya existe";
         }
+
         Usuarios usuarios = Usuarios.builder()
                 .nombreCompleto(request.getNombreCompleto())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .build();
+
         usuariosRepository.save(usuarios);
-        return mensaje = "Usuario registrado con exito!";
+        return "Usuario registrado con éxito!";
     }
 
     @Override
