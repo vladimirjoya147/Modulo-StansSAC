@@ -20,4 +20,7 @@ public interface DetalleService {
     public DetalleResponse buscarPorId (Integer id);
 
 
+   //AGREGADO
+   public List<DetalleResponse> listarPorIdAlquiler(Integer idAlquiler);
+
 }

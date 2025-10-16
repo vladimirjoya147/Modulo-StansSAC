@@ -4,6 +4,8 @@ import com.cibertec.ModuloStandsSAC.DTO.Categoria.CategoriaMessage;
 import com.cibertec.ModuloStandsSAC.DTO.Categoria.CategoriaRequestDTO;
 import com.cibertec.ModuloStandsSAC.DTO.Categoria.CategoriaResponseDTO;
 import com.cibertec.ModuloStandsSAC.Service.CategoriaService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +16,25 @@ import java.util.List;
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
+    
+   
 
     public CategoriaController(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
+
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoriaResponseDTO>> listarTodosCategorias(){
-        return ResponseEntity.ok(categoriaService.listarCategorias());
+    public ResponseEntity<List<CategoriaResponseDTO>> listarTodosCategorias() {
+
+        List<CategoriaResponseDTO> categorias = categoriaService.listarCategorias();
+
+        // Generación de PDF 
+        PdfGenerator.generarReporte(categorias, "CategoriasReporte.pdf");
+
+        return ResponseEntity.ok(categorias);
     }
+
     @PostMapping("/guardar")
     public ResponseEntity<CategoriaResponseDTO> guardarCatgerorias (@RequestBody CategoriaRequestDTO categoriaRequestDTO){
         return ResponseEntity.ok(categoriaService.guardarCategoria(categoriaRequestDTO));
