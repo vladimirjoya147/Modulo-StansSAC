@@ -4,6 +4,10 @@ import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleMessage;
 import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleRequest;
 import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.DetalleResponse;
 import com.cibertec.ModuloStandsSAC.Service.DetalleService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +20,18 @@ public class DetalleController {
     public DetalleController(DetalleService detalleService) {
         this.detalleService = detalleService;
     }
+    
+    //AGREGADO , LISTADO DE DETALLES POR ALQUILER
+    @GetMapping("/listar/{idAlquiler}")
+    public ResponseEntity<List<DetalleResponse>> listarPorAlquiler(@PathVariable Integer idAlquiler) {
+        List<DetalleResponse> detalles = detalleService.listarPorIdAlquiler(idAlquiler);
+
+        // Generar PDF 
+        PdfGenerator.generarReporte(detalles, "DetalleAlquiler-" + idAlquiler);
+
+        return ResponseEntity.ok(detalles);
+    }
+    
 
     @PostMapping("/guardar")
     public ResponseEntity<DetalleResponse> guardarDetalles (@RequestBody DetalleRequest detalleRequest){

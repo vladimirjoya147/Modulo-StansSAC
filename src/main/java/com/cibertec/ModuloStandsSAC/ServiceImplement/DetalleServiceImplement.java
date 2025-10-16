@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DetalleServiceImplement implements DetalleService {
@@ -116,4 +117,24 @@ public class DetalleServiceImplement implements DetalleService {
         return DetalleMapper.toDTO(detalle);
     }
 
+
+    //AGREGADO
+    @Override
+    public List<DetalleResponse> listarPorIdAlquiler(Integer idAlquiler) {
+        List<DetalleAlquiler> detalles = detalleRepository.findByAlquiler_IdAlquiler(idAlquiler);
+        if (detalles.isEmpty()) {
+            throw new EntityNotFoundException("No se encontraron detalles para el alquiler con ID: " + idAlquiler);
+        }
+        return detalles.stream()
+                .map(DetalleMapper::toDTO)
+                .toList(); 
+    }
+
+
+
+
 }
+
+    
+    
+    

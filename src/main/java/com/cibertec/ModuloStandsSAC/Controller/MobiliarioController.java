@@ -1,10 +1,13 @@
 package com.cibertec.ModuloStandsSAC.Controller;
 
+import com.cibertec.ModuloStandsSAC.DTO.Evento.EventoResponse;
 import com.cibertec.ModuloStandsSAC.DTO.Mobiliario.MobiliarioMessage;
 import com.cibertec.ModuloStandsSAC.DTO.Mobiliario.MobiliarioRequest;
 import com.cibertec.ModuloStandsSAC.DTO.Mobiliario.MobiliarioResponse;
 import com.cibertec.ModuloStandsSAC.Entity.Mobiliario;
 import com.cibertec.ModuloStandsSAC.Service.MobiliarioService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +25,16 @@ public class MobiliarioController {
 
     @GetMapping
     public ResponseEntity<List<MobiliarioResponse>> listarMobiliarios (){
-        return ResponseEntity.ok(mobiliarioService.listarMobiliario());
+    	
+    	   List<MobiliarioResponse> mobiliario = mobiliarioService.listarMobiliario();
+   	    // Generación de PDF 
+          PdfGenerator.generarReporte(mobiliario, "MobiliarioReporte.pdf");
+       return ResponseEntity.ok(mobiliario);
+       
     }
+    
+   
+    
 
     @PostMapping("/guardar")
     public ResponseEntity<MobiliarioResponse> guardarMobiliarios (@RequestBody MobiliarioRequest mobiliarioRequest){

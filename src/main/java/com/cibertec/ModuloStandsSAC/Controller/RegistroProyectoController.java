@@ -1,9 +1,12 @@
 package com.cibertec.ModuloStandsSAC.Controller;
 
+import com.cibertec.ModuloStandsSAC.DTO.RegistroAlquiler.AlquilerResponse;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroProyecto.ProyectoMessage;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroProyecto.ProyectoRequest;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroProyecto.ProyectoResponse;
 import com.cibertec.ModuloStandsSAC.Service.ProyectoService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +22,17 @@ public class RegistroProyectoController {
         this.proyectoService = proyectoService;
     }
 
+
     @GetMapping
     public ResponseEntity<List<ProyectoResponse>> listarProyectos (){
-        return ResponseEntity.ok(proyectoService.listarProyectoActivos());
+    	
+    	   List<ProyectoResponse> proyecto = proyectoService.listarProyectoActivos();
+   	    // Generación de PDF 
+          PdfGenerator.generarReporte(proyecto, "ProyectoReporte.pdf");
+       return ResponseEntity.ok(proyecto);
+       
     }
+    
 
     @PostMapping("/guardar")
     public ResponseEntity<ProyectoResponse> guardarProyectos(@RequestBody ProyectoRequest proyectoRequest){

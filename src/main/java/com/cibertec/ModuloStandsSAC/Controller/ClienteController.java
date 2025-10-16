@@ -7,6 +7,8 @@ import com.cibertec.ModuloStandsSAC.DTO.Cliente.ClienteMessage;
 import com.cibertec.ModuloStandsSAC.DTO.Cliente.ClienteRequestDTO;
 import com.cibertec.ModuloStandsSAC.DTO.Cliente.ClienteResponseDTO;
 import com.cibertec.ModuloStandsSAC.Service.ClienteService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +23,20 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
+
+    
     @GetMapping
-    public ResponseEntity<List<ClienteResponseDTO>> listarTodosCategorias(){
-        return ResponseEntity.ok(clienteService.listarClientes());
+    public ResponseEntity<List<ClienteResponseDTO>> listarTodosCategorias() {
+
+        List<ClienteResponseDTO> clientes = clienteService.listarClientes();
+
+        // Generación de PDF 
+        PdfGenerator.generarReporte(clientes, "ClienteReporte.pdf");
+
+        return ResponseEntity.ok(clientes);
     }
+    
+    
     @PostMapping("/guardar")
     public ResponseEntity<ClienteResponseDTO> guardarCatgerorias (@RequestBody ClienteRequestDTO clienteRequestDTO){
         return ResponseEntity.ok(clienteService.guardarCliente(clienteRequestDTO));

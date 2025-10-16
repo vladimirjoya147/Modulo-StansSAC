@@ -1,11 +1,14 @@
 package com.cibertec.ModuloStandsSAC.Controller;
 
 import com.cibertec.ModuloStandsSAC.DTO.DetalleAlquiler.AlquilerDetalleProjection;
+import com.cibertec.ModuloStandsSAC.DTO.Mobiliario.MobiliarioResponse;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroAlquiler.AlquilerDetalleResponse;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroAlquiler.AlquilerMessage;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroAlquiler.AlquilerRequest;
 import com.cibertec.ModuloStandsSAC.DTO.RegistroAlquiler.AlquilerResponse;
 import com.cibertec.ModuloStandsSAC.Service.AlquilerService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +24,19 @@ public class RegistroAlquilerController {
         this.alquilerService = alquilerService;
     }
 
+
     @GetMapping
     public ResponseEntity<List<AlquilerResponse>> listarTodosAlquileres (){
-        return ResponseEntity.ok(alquilerService.listarAlquilerActivos());
+    	
+    	   List<AlquilerResponse> alquiler = alquilerService.listarAlquilerActivos();
+   	    // Generación de PDF 
+          PdfGenerator.generarReporte(alquiler, "AlquilerReporte.pdf");
+       return ResponseEntity.ok(alquiler);
+       
     }
+    
+    
+    
     @PostMapping("/guardar")
     public ResponseEntity<AlquilerResponse> guardarAlquileres(@RequestBody AlquilerRequest alquilerRequest){
         return ResponseEntity.ok(alquilerService.guardarAlquiler(alquilerRequest));

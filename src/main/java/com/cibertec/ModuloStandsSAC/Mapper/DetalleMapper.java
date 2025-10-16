@@ -24,8 +24,8 @@ public class DetalleMapper {
 
     public static DetalleResponse toDTO (DetalleAlquiler detalle){
         DetalleResponse res = new DetalleResponse();
-        res.setIdDetalle(detalle.getIdDetalle());
-        res.setRegistroAlquilerDevolucion(detalle.getAlquiler().getFechaDevolucionEstimada());
+        res.setIdDetalle(detalle.getIdDetalle());     
+        res.setRegistroAlquilerDevolucion(detalle.getAlquiler().getFechaDevolucionEstimada());      
         res.setEstado(detalle.getEstado());
         res.setPrecioUnitario(detalle.getPrecioUnitario());
         res.setNombreMobiliario(detalle.getMobiliario().getNombre());
