@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RegistroProyectoRepository extends JpaRepository<RegistroProyecto, Integer> {
-    @Query(value = "SELECT * FROM RegistroProyecto WHERE estado=true", nativeQuery = true)
+    @Query(value = "SELECT * FROM registroproyecto WHERE estado=true", nativeQuery = true)
     public List<RegistroProyecto> listarRegistroProyecto();
 }

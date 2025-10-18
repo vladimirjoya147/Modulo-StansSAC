@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface MobiliarioRepository extends JpaRepository<Mobiliario, Integer> {
-    @Query(value = "SELECT * FROM Mobiliario WHERE estado=true", nativeQuery = true)
+    @Query(value = "SELECT * FROM mobiliario WHERE estado=true", nativeQuery = true)
     public List<Mobiliario> listarMobiliarioActivas();
 }

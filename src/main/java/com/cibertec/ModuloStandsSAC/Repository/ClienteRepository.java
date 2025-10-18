@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente,Integer> {
-    @Query(value = "SELECT * FROM Cliente WHERE Estado=true",nativeQuery = true)
+    @Query(value = "SELECT * FROM cliente WHERE Estado=true",nativeQuery = true)
     public List<Cliente> listarClientes();
 }

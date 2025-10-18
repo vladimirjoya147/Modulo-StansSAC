@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface EventoRepository extends JpaRepository<Evento, Integer> {
-    @Query(value = "SELECT * FROM Evento WHERE estado=true", nativeQuery = true)
+    @Query(value = "SELECT * FROM evento WHERE estado=true", nativeQuery = true)
     public List<Evento> listarEventosActivas();
 }

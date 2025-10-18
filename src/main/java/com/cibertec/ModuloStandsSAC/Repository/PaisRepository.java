@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Integer> {
-    @Query(value = "SELECT * FROM Pais WHERE Estado=true",nativeQuery = true)
+    @Query(value = "SELECT * FROM pais WHERE Estado=true",nativeQuery = true)
     public List<Pais> listarPaises();
 }
