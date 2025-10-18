@@ -3,6 +3,9 @@ package com.cibertec.ModuloStandsSAC.Util;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
@@ -13,17 +16,17 @@ import java.util.List;
 public class PdfGenerator {
 
     /**
-     * Genera un PDF a partir de cualquier lista de objetos.
-     * Retorna un arreglo de bytes que puede enviarse como descarga.
+     * Genera un PDF a partir de cualquier lista de objetos y retorna un ResponseEntity listo para descarga.
      *
-     * @param lista              Objetos a incluir en el PDF
-     * @param nombreBaseArchivo  Nombre base del archivo PDF (ej: "CategoriasReporte")
-     * @return byte[] con el contenido del PDF
+     * @param lista             Lista de objetos a incluir en el PDF
+     * @param nombreBaseArchivo Nombre base del archivo PDF (ej: "ClienteReporte")
+     * @param <T>               Tipo de los objetos en la lista
+     * @return ResponseEntity<byte[]> listo para ser devuelto desde un endpoint Spring
      */
-    public static <T> byte[] generarReporte(List<T> lista, String nombreBaseArchivo) {
+    public static <T> ResponseEntity<byte[]> generarReporte(List<T> lista, String nombreBaseArchivo) {
         if (lista == null || lista.isEmpty()) {
             System.out.println("❌ Lista vacía, no se genera PDF");
-            return null;
+            return ResponseEntity.noContent().build();
         }
 
         try {
@@ -68,11 +71,19 @@ public class PdfGenerator {
             document.add(tabla);
             document.close();
 
-            return baos.toByteArray();
+            byte[] pdfBytes = baos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + nombreBaseArchivo);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(pdfBytes);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return ResponseEntity.status(500).build();
         }
     }
 }
