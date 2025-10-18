@@ -4,6 +4,8 @@ import com.cibertec.ModuloStandsSAC.DTO.Evento.EventoMessage;
 import com.cibertec.ModuloStandsSAC.DTO.Evento.EventoRequest;
 import com.cibertec.ModuloStandsSAC.DTO.Evento.EventoResponse;
 import com.cibertec.ModuloStandsSAC.Service.EventoService;
+import com.cibertec.ModuloStandsSAC.Util.PdfGenerator;
+
 import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,14 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.listarEventos());
     }
 
+    // Endpoint PDF
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReporteEventos() {
+        List<EventoResponse> eventos = eventoService.listarEventos();
+        return PdfGenerator.generarReporte(eventos, "EventosReporte.pdf");
+    }
+
+    
     @PostMapping("/guardar")
     public ResponseEntity<EventoResponse> guardarEventos(@RequestBody EventoRequest eventoRequest){
         return ResponseEntity.ok(eventoService.guardarEvento(eventoRequest));

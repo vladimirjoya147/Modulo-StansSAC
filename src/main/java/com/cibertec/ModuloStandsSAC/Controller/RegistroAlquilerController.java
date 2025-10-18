@@ -29,11 +29,18 @@ public class RegistroAlquilerController {
     public ResponseEntity<List<AlquilerResponse>> listarTodosAlquileres (){
     	
     	   List<AlquilerResponse> alquiler = alquilerService.listarAlquilerActivos();
-   	    // Generación de PDF 
-          PdfGenerator.generarReporte(alquiler, "AlquilerReporte.pdf");
+   	   
        return ResponseEntity.ok(alquiler);
        
     }
+    
+    // Endpoint PDF
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReporteAlquileres() {
+        List<AlquilerResponse> alquileres = alquilerService.listarAlquilerActivos();
+        return PdfGenerator.generarReporte(alquileres, "AlquilerReporte.pdf");
+    }
+    
     
     
     

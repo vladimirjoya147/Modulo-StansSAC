@@ -27,14 +27,18 @@ public class MobiliarioController {
     public ResponseEntity<List<MobiliarioResponse>> listarMobiliarios (){
     	
     	   List<MobiliarioResponse> mobiliario = mobiliarioService.listarMobiliario();
-   	    // Generación de PDF 
-          PdfGenerator.generarReporte(mobiliario, "MobiliarioReporte.pdf");
+   	   
        return ResponseEntity.ok(mobiliario);
        
     }
-    
    
     
+    // Endpoint PDF
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReporteMobiliarios() {
+        List<MobiliarioResponse> mobiliarios = mobiliarioService.listarMobiliario();
+        return PdfGenerator.generarReporte(mobiliarios, "MobiliarioReporte.pdf");
+    }
 
     @PostMapping("/guardar")
     public ResponseEntity<MobiliarioResponse> guardarMobiliarios (@RequestBody MobiliarioRequest mobiliarioRequest){

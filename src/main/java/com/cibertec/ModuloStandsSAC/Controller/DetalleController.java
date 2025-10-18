@@ -26,13 +26,19 @@ public class DetalleController {
     public ResponseEntity<List<DetalleResponse>> listarPorAlquiler(@PathVariable Integer idAlquiler) {
         List<DetalleResponse> detalles = detalleService.listarPorIdAlquiler(idAlquiler);
 
-        // Generar PDF 
-        PdfGenerator.generarReporte(detalles, "DetalleAlquiler-" + idAlquiler);
-
         return ResponseEntity.ok(detalles);
     }
-    
 
+
+    
+    @GetMapping("/reporte/{idAlquiler}")
+    public ResponseEntity<byte[]> descargarReporteDetalle(@PathVariable Integer idAlquiler) {
+        List<DetalleResponse> detalles = detalleService.listarPorIdAlquiler(idAlquiler);
+        return PdfGenerator.generarReporte(detalles, "DetalleAlquiler-" + idAlquiler + ".pdf");
+    }
+
+    
+    
     @PostMapping("/guardar")
     public ResponseEntity<DetalleResponse> guardarDetalles (@RequestBody DetalleRequest detalleRequest){
         return ResponseEntity.ok(detalleService.guardarDetalle(detalleRequest));

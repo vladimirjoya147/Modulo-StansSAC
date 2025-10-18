@@ -30,12 +30,17 @@ public class ClienteController {
 
         List<ClienteResponseDTO> clientes = clienteService.listarClientes();
 
-        // Generación de PDF 
-        PdfGenerator.generarReporte(clientes, "ClienteReporte.pdf");
-
         return ResponseEntity.ok(clientes);
     }
     
+   
+    
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReporteClientes() {
+        List<ClienteResponseDTO> clientes = clienteService.listarClientes();
+        return PdfGenerator.generarReporte(clientes, "ClienteReporte.pdf");
+    }
+  
     
     @PostMapping("/guardar")
     public ResponseEntity<ClienteResponseDTO> guardarCatgerorias (@RequestBody ClienteRequestDTO clienteRequestDTO){

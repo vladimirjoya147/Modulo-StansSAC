@@ -27,11 +27,18 @@ public class RegistroProyectoController {
     public ResponseEntity<List<ProyectoResponse>> listarProyectos (){
     	
     	   List<ProyectoResponse> proyecto = proyectoService.listarProyectoActivos();
-   	    // Generación de PDF 
-          PdfGenerator.generarReporte(proyecto, "ProyectoReporte.pdf");
        return ResponseEntity.ok(proyecto);
        
     }
+    
+    
+    // Endpoint PDF
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReporteProyectos() {
+        List<ProyectoResponse> proyectos = proyectoService.listarProyectoActivos();
+        return PdfGenerator.generarReporte(proyectos, "ProyectoReporte.pdf");
+    }
+    
     
 
     @PostMapping("/guardar")
