@@ -14,9 +14,11 @@ import java.util.List;
 @Repository
 public interface RegistroAlquilerRepository extends JpaRepository<RegistroAlquiler, Integer> {
 
-    @Query(value = "SELECT * FROM RegistroAlquiler WHERE estado=true", nativeQuery = true)
+    @Query(value = "SELECT * FROM registroalquiler WHERE estado=true", nativeQuery = true)
     public List<RegistroAlquiler> listarRegistroAlquiler();
 
+    
+    
     @Query(value = """
                 SELECT
             	    da.id_alquiler,
@@ -26,9 +28,9 @@ public interface RegistroAlquilerRepository extends JpaRepository<RegistroAlquil
                     da.Cantidad,
                     da.precio_unitario,
                     da.subtotal
-                    FROM DetalleAlquiler da
-                    INNER JOIN RegistroAlquiler ra ON da.id_alquiler = ra.id_alquiler
-                    INNER JOIN Mobiliario m ON da.id_mobiliario = m.id_mobiliario
+                    FROM detallealquiler da
+                    INNER JOIN registroalquiler ra ON da.id_alquiler = ra.id_alquiler
+                    INNER JOIN mobiliario m ON da.id_mobiliario = m.id_mobiliario
                     WHERE da.Estado = 1 AND da.id_alquiler = :id
             """,nativeQuery = true)
     public List<AlquilerDetalleProjection> listarAlquilerPorid(@Param("id")Integer id);

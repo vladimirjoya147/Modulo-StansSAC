@@ -28,9 +28,17 @@ public class PaisController {
     public ResponseEntity<List<PaisResponse>> listarProductos (){
     	
     	   List<PaisResponse> pais = paisService.listarPaises();
-   	    // Generación de PDF 
-          PdfGenerator.generarReporte(pais, "PaisReporte.pdf");
+ 
        return ResponseEntity.ok(pais);
        
     }
+    
+
+    // Endpoint PDF
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReportePaises() {
+        List<PaisResponse> paises = paisService.listarPaises();
+        return PdfGenerator.generarReporte(paises, "PaisReporte.pdf");
+    }
+    
 }

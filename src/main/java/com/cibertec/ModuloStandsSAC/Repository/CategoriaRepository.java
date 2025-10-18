@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface CategoriaRepository extends JpaRepository <Categoria, Integer> {
-    @Query(value = "SELECT * FROM Categoria WHERE Estado=true",nativeQuery = true)
+    @Query(value = "SELECT * FROM categoria WHERE Estado=true",nativeQuery = true)
     public List<Categoria> listarCategorias();
 }

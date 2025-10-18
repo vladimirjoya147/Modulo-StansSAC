@@ -3,9 +3,11 @@ package com.cibertec.ModuloStandsSAC.Util;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,31 +16,23 @@ import java.util.List;
 public class PdfGenerator {
 
     /**
-     * Genera un PDF a partir de cualquier lista de objetos.
-     * Cada PDF incluirá fecha y hora en el nombre y se guardará en /reports
+     * Genera un PDF a partir de cualquier lista de objetos y retorna un ResponseEntity listo para descarga.
      *
-     * @param lista          Objetos a incluir en el PDF
-     * @param nombreBaseArchivo Nombre base del archivo PDF (ej: "CategoriasReporte")
+     * @param lista             Lista de objetos a incluir en el PDF
+     * @param nombreBaseArchivo Nombre base del archivo PDF (ej: "ClienteReporte")
+     * @param <T>               Tipo de los objetos en la lista
+     * @return ResponseEntity<byte[]> listo para ser devuelto desde un endpoint Spring
      */
-    public static <T> void generarReporte(List<T> lista, String nombreBaseArchivo) {
+    public static <T> ResponseEntity<byte[]> generarReporte(List<T> lista, String nombreBaseArchivo) {
         if (lista == null || lista.isEmpty()) {
             System.out.println("❌ Lista vacía, no se genera PDF");
-            return;
+            return ResponseEntity.noContent().build();
         }
 
         try {
-            // Crear carpeta "reports" si no existe
-            File carpeta = new File("reports");
-            if (!carpeta.exists()) {
-                carpeta.mkdir();
-            }
-
-            // Fecha y hora para el nombre del archivo
-            String fechaHora = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String nombreArchivo = "reports/" + nombreBaseArchivo + "-" + fechaHora + ".pdf";
-
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(nombreArchivo));
+            PdfWriter.getInstance(document, baos);
             document.open();
 
             // Fuente
@@ -77,10 +71,19 @@ public class PdfGenerator {
             document.add(tabla);
             document.close();
 
-            System.out.println("✅ PDF generado en: " + nombreArchivo);
+            byte[] pdfBytes = baos.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + nombreBaseArchivo);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(pdfBytes);
 
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 }

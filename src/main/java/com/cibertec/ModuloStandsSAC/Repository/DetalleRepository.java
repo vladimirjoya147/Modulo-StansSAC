@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DetalleRepository extends JpaRepository<DetalleAlquiler, Integer> {
 
-	   //AGREGADO: Método  para listar detalles por idAlquiler
+	   //AGREGADO:  Método  para listar detalles por idAlquiler
     List<DetalleAlquiler> findByAlquiler_IdAlquiler(Integer idAlquiler);
 }

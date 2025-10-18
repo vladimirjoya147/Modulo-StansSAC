@@ -29,10 +29,13 @@ public class CategoriaController {
 
         List<CategoriaResponseDTO> categorias = categoriaService.listarCategorias();
 
-        // Generación de PDF 
-        PdfGenerator.generarReporte(categorias, "CategoriasReporte.pdf");
-
         return ResponseEntity.ok(categorias);
+    }
+    
+    @GetMapping("/reporte")
+    public ResponseEntity<byte[]> descargarReporteCategorias() {
+        List<CategoriaResponseDTO> categorias = categoriaService.listarCategorias();
+        return PdfGenerator.generarReporte(categorias, "CategoriasReporte.pdf");
     }
 
     @PostMapping("/guardar")

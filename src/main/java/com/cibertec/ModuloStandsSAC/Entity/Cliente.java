@@ -5,15 +5,18 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "Cliente")
+@Table(name = "cliente")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCliente;
+    
+    @Column(name = "nombre_cliente")
     private String nombreCliente;
     @ManyToOne
     @JoinColumn(name="pais_id")
     private Pais paisId;
+    
     @Column(name = "Contacto")
     private String contacto;
     @Column(name = "Telefono")
