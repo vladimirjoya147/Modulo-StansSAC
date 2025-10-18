@@ -2,7 +2,7 @@ package com.cibertec.ModuloStandsSAC.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+//
 @Entity
 @Data
 @Table(name = "pais")

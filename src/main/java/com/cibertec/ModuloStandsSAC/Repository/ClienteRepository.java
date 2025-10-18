@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+//cliente repository
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente,Integer> {
     @Query(value = "SELECT * FROM cliente WHERE Estado=true",nativeQuery = true)

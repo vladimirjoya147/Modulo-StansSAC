@@ -16,6 +16,7 @@ public class Cliente {
     @ManyToOne
     @JoinColumn(name="pais_id")
     private Pais paisId;
+    
     @Column(name = "Contacto")
     private String contacto;
     @Column(name = "Telefono")
